@@ -1,6 +1,6 @@
 import { EventOrJQueryEvent, HTMLElementOrJQuery } from "./lib/types";
 
-const getElement = (el: HTMLElementOrJQuery):JQuery<HTMLElement> => {
+const getElement = (el: HTMLElementOrJQuery): JQuery<HTMLElement> => {
     return el instanceof HTMLElement ? $(el) : el;
 }
 
