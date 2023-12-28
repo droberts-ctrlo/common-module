@@ -5,3 +5,4 @@ node_modules/
 jest.config.js
 tsconfig.json
 yarn.lock
+babel.config.js
