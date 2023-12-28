@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "build": "tsc"
   },
   "name": "@davetheitguy/common-module",
   "version": "1.0.2",
