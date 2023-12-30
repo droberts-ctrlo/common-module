@@ -1,6 +1,5 @@
-const { stopPropagation, hideElement, showElement } = require("./common");
-
-const $ = require('jquery');
+import { stopPropagation, hideElement, showElement } from "./common";
+import 'jquery';
 
 describe('Common javascript function tests', ()=>{
     it('stops propagation', ()=>{
