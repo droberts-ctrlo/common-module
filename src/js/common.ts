@@ -4,13 +4,27 @@ const getElement = (el: HTMLElementOrJQuery): JQuery<HTMLElement> => {
     return el instanceof HTMLElement ? $(el) : el;
 }
 
+/**
+ * Stops the propagation of the event and prevents the default action
+ * @param e The event to stop
+ */
 export const stopPropagation = (e: EventOrJQueryEvent) => {
     e.stopPropagation();
     e.preventDefault();
 };
 
+/**
+ * Returns true if the element has the given class
+ * @param el The element to check
+ * @param className The class to check for
+ */
 export const hasClass = (el: HTMLElementOrJQuery, className: string) => getElement(el).hasClass(className);
 
+/**
+ * Adds the given class to the element
+ * @param el The element to add the class to
+ * @param className The class to add
+ */
 export const hideElement = (el: HTMLElementOrJQuery) => {
     const $el = getElement(el);
     if(hasClass($el, 'hidden')) return;
@@ -20,6 +34,11 @@ export const hideElement = (el: HTMLElementOrJQuery) => {
     $el.css('visibility', 'hidden');
 };
 
+/**
+ * Removes the given class from the element
+ * @param el The element to remove the class from
+ * @param className The class to remove
+ */
 export const showElement = (el: HTMLElementOrJQuery) => {
     const $el = getElement(el);
     if(!hasClass($el, 'hidden')) return;
