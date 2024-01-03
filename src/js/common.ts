@@ -1,5 +1,12 @@
 import { EventOrJQueryEvent, HTMLElementOrJQuery } from "./lib/types";
 
+declare global {
+    interface HTMLElement {
+        hide: () => void;
+        show: () => void;
+    }
+}
+
 const getElement = (el: HTMLElementOrJQuery): JQuery<HTMLElement> => {
     return el instanceof HTMLElement ? $(el) : el;
 }
@@ -47,3 +54,26 @@ export const showElement = (el: HTMLElementOrJQuery) => {
     $el.css('display', '');
     $el.css('visibility', '');
 };
+
+export const asJSON = (data: string | object): object => {
+    const rx = /[Ss]tring/;
+    if (data)
+        return rx.test(typeof (data)) ? JSON.parse(data as string) : data;
+    return {};
+}
+
+if (jQuery) {
+    (function ($) {
+        $.fn.hide = () => {
+            hideElement(this);
+            return this;
+        }
+        $.fn.show = () => {
+            showElement(this);
+            return this;
+        }
+
+        HTMLElement.prototype.hide = () => hideElement(this);
+        HTMLElement.prototype.show = () => showElement(this);
+    });
+}
