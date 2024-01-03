@@ -1,4 +1,5 @@
 import { EventOrJQueryEvent, HTMLElementOrJQuery } from "./lib/types";
+import * as jQuery from "jquery";
 
 declare global {
     interface HTMLElement {
