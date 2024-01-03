@@ -6,7 +6,7 @@
     "prepublish": "npm run build"
   },
   "name": "@davetheitguy/common-module",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "index.js",
   "repository": "https://github.com/droberts-ctrlo/common-module",
   "author": "Dave Roberts <d.roberts@ctrlo.com>",
