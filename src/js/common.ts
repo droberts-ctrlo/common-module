@@ -1,5 +1,4 @@
 import { EventOrJQueryEvent, HTMLElementOrJQuery } from "./lib/types";
-import * as jQuery from "jquery";
 
 declare global {
     interface HTMLElement {
@@ -61,20 +60,4 @@ export const asJSON = (data: string | object): object => {
     if (data)
         return rx.test(typeof (data)) ? JSON.parse(data as string) : data;
     return {};
-}
-
-if (jQuery) {
-    (function ($) {
-        $.fn.hide = () => {
-            hideElement(this);
-            return this;
-        }
-        $.fn.show = () => {
-            showElement(this);
-            return this;
-        }
-
-        HTMLElement.prototype.hide = () => hideElement(this);
-        HTMLElement.prototype.show = () => showElement(this);
-    });
-}
+};
