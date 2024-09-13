@@ -1,3 +1,5 @@
-const fs = require('node:fs');
+const {writeFileSync, existsSync, copyFileSync, mkdirSync} = require('node:fs');
 const output = '{ "type": "module" }';
-fs.writeFileSync('./dist/esm/package.json', output);
+writeFileSync('./dist/esm/package.json', output);
+if (!existsSync('./dist/css')) mkdirSync('./dist/css');
+copyFileSync('./src/css/common.css', './dist/css/common.css');

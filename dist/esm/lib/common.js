@@ -1,27 +1,28 @@
 export const hideElement = (element) => {
-    const $el = $(element);
-    $el.each((index, el) => {
-        if (el.ariaHidden)
+    $(element).each((_, el) => {
+        if (el.classList.contains('hidden'))
             return;
-        el.ariaHidden = "true";
+        el.classList.add('hidden');
+        el.setAttribute('aria-hidden', 'true');
     });
 };
 export const showElement = (element) => {
-    const $el = $(element);
-    $el.each((index, el) => {
-        if (!el.ariaHidden)
+    $(element).each((_, el) => {
+        if (!el.classList.contains('hidden'))
             return;
-        el.ariaHidden = null;
+        el.classList.remove('hidden');
+        el.removeAttribute('aria-hidden');
     });
 };
 export const fromJson = (json) => {
     try {
+        let result = null;
         if (!json || json === '')
             return {};
         if (typeof json === 'string') {
-            return JSON.parse(json) ?? JSON.parse(json);
+            result = JSON.parse(json);
         }
-        return json;
+        return result ?? json ?? {};
     }
     catch (e) {
         return {};

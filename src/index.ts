@@ -1,1 +1,1 @@
-export { fromJson, hideElement, showElement } from './lib/common';
+export {fromJson, hideElement, showElement} from './lib/common';

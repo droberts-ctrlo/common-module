@@ -1,29 +1,28 @@
-// Instanceof is used throughout, this is because we need to ensure ElementLike is not overwritten by JQuery (else we could use `$el=$(element)`)
-
-export const hideElement = (element: HTMLElement | JQuery<HTMLElement>) => {
-    const $el = $(element);
-    $el.each((index, el) => {
-        if (el.ariaHidden) return;
-        el.ariaHidden = "true";
+export const hideElement = <TElement extends HTMLElement = HTMLElement>(element: TElement | JQuery<TElement>) => {
+    $(element).each((_, el) => {
+        if (el.classList.contains('hidden')) return;
+        el.classList.add('hidden');
+        el.setAttribute('aria-hidden', 'true');
     });
 };
 
-export const showElement = (element: HTMLElement | JQuery<HTMLElement>) => {
-    const $el = $(element);
-    $el.each((index, el) => {
-        if (!el.ariaHidden) return;
-        el.ariaHidden = null;
+export const showElement = <TElement extends HTMLElement = HTMLElement>(element: TElement | JQuery<TElement>) => {
+    $(element).each((_, el) => {
+        if (!el.classList.contains('hidden')) return;
+        el.classList.remove('hidden');
+        el.removeAttribute('aria-hidden');
     });
 };
 
-export const fromJson = <T = object>(json: String | T | object | null | undefined): T | object => {
+export const fromJson = <T = object>(json: String | T | null | undefined): T | object => {
     try {
-        if (!json || json === '') return {};
+        let result: T | null = null;
+        if (!json || json === '') return {} as object;
         if (typeof json === 'string') {
-            return JSON.parse(json) as T ?? JSON.parse(json) as object;
+            result = JSON.parse(json) as T;
         }
-        return json;
+        return result ?? json as T ?? {} as object;
     } catch (e) {
-        return {};
+        return {} as object;
     }
 }

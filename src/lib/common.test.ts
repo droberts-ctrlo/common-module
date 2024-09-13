@@ -1,51 +1,77 @@
-import { fromJson, hideElement, showElement } from "./common";
-import { describe, it, expect, jest } from '@jest/globals';
-import './test.definitions';
-
-type TestObject = { foo: string };
+import "./test.definitions";
+import {fromJson, hideElement, showElement} from "./common";
+import {describe, it, jest, beforeEach, afterEach, expect} from "@jest/globals"
 
 describe('common functions', () => {
     describe('CSS and ARIA', () => {
+        let el: HTMLDivElement;
+
+        beforeEach(() => {
+            el = document.createElement('div');
+        });
+
+        afterEach(() => {
+            jest.clearAllMocks();
+        });
+
         it('hides an element', () => {
-            const el = document.createElement('div');
+            const cl = el.classList;
+            const hasClass = jest.spyOn(cl, 'contains')
+            const addClass = jest.spyOn(cl, 'add');
+            const attr = jest.spyOn(el, 'setAttribute');
             hideElement(el);
-            expect(el.ariaHidden).toEqual('true');
+            expect(hasClass).toHaveBeenCalledWith('hidden');
+            expect(addClass).toHaveBeenCalledWith('hidden');
+            expect(attr).toHaveBeenCalledWith('aria-hidden', 'true');
         });
 
         it('does not hide a hidden element', () => {
-            const el = document.createElement('div');
-            el.ariaHidden = 'true';
-            expect(el.ariaHidden).toEqual('true');
+            el.classList.add('hidden');
+            const cl = el.classList;
+            const hasClass = jest.spyOn(cl, 'contains')
+            const addClass = jest.spyOn(cl, 'add');
+            const attr = jest.spyOn(el, 'setAttribute');
             hideElement(el);
-            expect(el.ariaHidden).toEqual('true');
+            expect(hasClass).toHaveBeenCalledWith('hidden');
+            expect(addClass).not.toHaveBeenCalled();
+            expect(attr).not.toHaveBeenCalled();
         });
 
         it('shows a hidden element', () => {
-            const el = document.createElement('div');
-            el.ariaHidden = 'true';
+            el.classList.add('hidden');
+            const cl = el.classList;
+            const hasClass = jest.spyOn(cl, 'contains')
+            const removeClass = jest.spyOn(cl, 'remove');
+            const removeAttr = jest.spyOn(el, 'removeAttribute');
             showElement(el);
-            expect(el.ariaHidden).toEqual(null);
+            expect(hasClass).toHaveBeenCalledWith('hidden');
+            expect(removeClass).toHaveBeenCalledWith('hidden');
+            expect(removeAttr).toHaveBeenCalledWith('aria-hidden');
         });
 
         it('does not show a visible element', () => {
-            const el = document.createElement('div');
-            expect(el.ariaHidden).toEqual(undefined);
+            const cl = el.classList;
+            const hasClass = jest.spyOn(cl, 'contains')
+            const removeClass = jest.spyOn(cl, 'remove');
+            const removeAttr = jest.spyOn(el, 'removeAttribute');
             showElement(el);
-            expect(el.ariaHidden).toEqual(undefined);
+            expect(hasClass).toHaveBeenCalledWith('hidden');
+            expect(removeClass).not.toHaveBeenCalled();
+            expect(removeAttr).not.toHaveBeenCalled();
         });
     });
 
     describe('JSON tests', () => {
         it('parses a JSON string', () => {
             const json = '{"foo":"bar"}';
-            const parsed = fromJson<TestObject>(json);
-            expect((parsed as TestObject)?.foo).toEqual('bar');
+            const parsed: any = fromJson<{ foo: string }>(json);
+            expect(parsed.foo).toEqual('bar');
         });
 
         it('parses a JSON object', () => {
-            const json = { foo: "bar" };
-            const parsed = fromJson<TestObject>(json);
-            expect((parsed as TestObject)?.foo).toEqual('bar');
+            const json = {foo: "bar"};
+            const parsed: any = fromJson(json);
+            expect(parsed.foo).toEqual('bar');
         });
 
         it('returns an empty object for invalid JSON', () => {
